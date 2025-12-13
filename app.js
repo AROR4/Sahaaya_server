@@ -8,6 +8,7 @@ const campaignRoutes = require("./routes/campaignRoutes");
 const userRoutes = require("./routes/userRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const acknowledgementRoutes = require("./routes/acknowledgementRoutes");
 const db = require("./db");
 
 const app = express();
@@ -19,5 +20,6 @@ app.use("/api/campaigns", campaignRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/", uploadRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/acknowledgements", acknowledgementRoutes);
 
 module.exports = app;   // ✅ export only

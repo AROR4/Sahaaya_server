@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
 
   authProvider: { type: String, default: 'google' },
 
+  // For local (email/password) authentication
+  passwordHash: { type: String, select: false },
+
   createdCampaigns: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Campaign'

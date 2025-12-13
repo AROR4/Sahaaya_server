@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-11-06T19:17:19.352Z",
+  "summary": {
+    "numPassedTests": 20,
+    "numFailedTests": 0,
+    "numTotalTests": 20,
+    "numPassedTestSuites": 1,
+    "numFailedTestSuites": 0,
+    "numTotalTestSuites": 1,
+    "success": true
+  },
+  "testResults": [
+    {
+      "name": "/Users/raghav/Documents/react/Sahaaya/backend/tests/regression.test.js",
+      "status": "passed",
+      "message": ""
+    }
+  ]
+}

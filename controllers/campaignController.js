@@ -59,19 +59,27 @@ exports.getAllCampaigns = async (req, res) => {
       .populate('participants', 'name email picture')
       .sort({ createdAt: -1 });
 
-    // If user is authenticated, mark which campaigns they've joined
-    if (req.user) {
-      const userId = req.user._id;
-      const campaignsWithJoinStatus = campaigns.map(campaign => ({
-        ...campaign.toObject(),
-        isJoined: campaign.participants.some(participant => 
+    // Convert all campaigns to objects and ensure rejectionReason is included
+    const campaignsData = campaigns.map(campaign => {
+      const campaignObj = campaign.toObject();
+      // Ensure rejectionReason is included (even if null)
+      campaignObj.rejectionReason = campaign.rejectionReason || null;
+      
+      // If user is authenticated, mark if they've joined this campaign
+      if (req.user) {
+        const userId = req.user._id;
+        // Use original campaign object to check participants (before toObject conversion)
+        campaignObj.isJoined = campaign.participants.some(participant => 
           participant._id.toString() === userId.toString()
-        )
-      }));
-      return res.status(200).json(campaignsWithJoinStatus);
-    }
+        );
+      }
+      
+      return campaignObj;
+    });
 
-    res.status(200).json(campaigns);
+    res.status(200).json(campaignsData);
+
+    res.status(200).json(campaignsData);
   } catch (err) {
     console.error('Error fetching campaigns:', err.message);
     res.status(500).json({ message: 'Failed to fetch campaigns', error: err.message });
@@ -91,17 +99,21 @@ exports.getCampaignById = async (req, res) => {
       return res.status(404).json({ message: 'Campaign not found' });
     }
 
+    // Convert to object to ensure all fields including rejectionReason are included
+    const campaignObj = campaign.toObject();
+
     // If user is authenticated, mark if they've joined this campaign
     if (req.user) {
       const userId = req.user._id;
-      const campaignObj = campaign.toObject();
       campaignObj.isJoined = campaign.participants.some(participant => 
         participant._id.toString() === userId.toString()
       );
-      return res.status(200).json(campaignObj);
     }
 
-    res.status(200).json(campaign);
+    // Ensure rejectionReason is included in response (even if null)
+    campaignObj.rejectionReason = campaign.rejectionReason || null;
+
+    res.status(200).json(campaignObj);
   } catch (err) {
     console.error('Error fetching campaign:', err.message);
     res.status(500).json({ message: 'Failed to fetch campaign', error: err.message });

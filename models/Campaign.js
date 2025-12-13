@@ -77,6 +77,11 @@ const campaignSchema = new mongoose.Schema({
     default: 'pending'
   },
 
+  rejectionReason: {
+    type: String,
+    default: null
+  },
+
   isNgoAffiliated: {
     type: Boolean,
     default: false

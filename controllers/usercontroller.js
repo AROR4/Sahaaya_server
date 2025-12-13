@@ -23,7 +23,7 @@ exports.getProfile = async (req, res) => {
     const userId = req.user._id;
 
     const user = await User.findById(userId)
-      .populate('createdCampaigns', 'title description category status createdAt')
+      .populate('createdCampaigns', 'title description category status createdAt rejectionReason')
       .populate('joinedCampaigns', 'title description category status createdAt');
 
     if (!user) {

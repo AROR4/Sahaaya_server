@@ -46,10 +46,14 @@ exports.approveCampaign = async (req, res) => {
 exports.rejectCampaign = async (req, res) => {
   try {
     const campaignId = req.params.id;
+    const { reason } = req.body;
 
     const campaign = await Campaign.findByIdAndUpdate(
       campaignId,
-      { status: 'rejected' },
+      { 
+        status: 'rejected',
+        rejectionReason: reason || null
+      },
       { new: true }
     ).populate('creator', 'name email picture role');
 
