@@ -12,10 +12,23 @@ const acknowledgementRoutes = require("./routes/acknowledgementRoutes");
 const db = require("./db");
 
 const app = express();
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-app.use(cors({ origin: "https://sahaayacampaigns.vercel.app", credentials: true }));
-app.use(cors({ origin: "https://sahaaya-zeta.vercel.app", credentials: true }));
-app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://sahaayacampaigns.vercel.app",
+  "https://sahaaya-zeta.vercel.app"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
 
 app.use("/api", authRoutes);
 app.use("/api/campaigns", campaignRoutes);
