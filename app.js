@@ -12,6 +12,7 @@ const acknowledgementRoutes = require("./routes/acknowledgementRoutes");
 const db = require("./db");
 
 const app = express();
+app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
   "https://sahaayacampaigns.vercel.app",
